@@ -46,6 +46,7 @@ from lms.models.marks import Mark
 from lms.models.uniforms import Uniform
 
 from common.models.subjects import Subject
+from common.models.persons import ContactInfo
 
 
 def create_faculties():
@@ -253,6 +254,23 @@ def create_passports() -> dict[str, Passport]:
     return passports
 
 
+def create_contact_info() -> dict[str, ContactInfo]:
+    values = [{
+        'personal_phone_number': '79608956420',
+    }, {
+        'personal_phone_number': '78005553535'
+    }]
+
+    contacts = {}
+
+    for value in values:
+        contact, _ = ContactInfo.objects.get_or_create(**value)
+        contact.save()
+        contacts[value['personal_phone_number']] = contact
+
+    return contacts
+
+
 def create_recruitments_offices() -> dict[str, RecruitmentOffice]:
     values = [{
         'title': 'городов Одинцово, Звенигород, Краснознаменск и '
@@ -322,14 +340,13 @@ def create_university_infos(
     return infos
 
 
-def create_students(
-    milgroups: dict[int, Milgroup],
-    programs: dict[str, Program],
-    milspecialties: dict[str, Milspecialty],
-    passports: dict[str, Passport],
-    recruitment_offices: dict[str, RecruitmentOffice],
-    university_infos: dict[str, UniversityInfo],
-):
+def create_students(milgroups: dict[int, Milgroup], programs: dict[str,
+                                                                   Program],
+                    milspecialties: dict[str, Milspecialty],
+                    passports: dict[str, Passport],
+                    recruitment_offices: dict[str, RecruitmentOffice],
+                    university_infos: dict[str, UniversityInfo],
+                    contact_infos: dict[str, ContactInfo]):
     # TODO – index term, add birth_info
     # FIXME(TmLev): provide family for every student
 
@@ -349,7 +366,8 @@ def create_students(
             'patronymic_genitive': 'Александровича',
             'passport': passports['0000'],
             'recruitment_office': recruitment_offices['Москва'],
-            'university_info': university_infos['HSE11229']
+            'university_info': university_infos['HSE11229'],
+            'contact_info': contact_infos['78005553535']
         },
         {
             'surname': 'Кацевалов',
@@ -367,6 +385,7 @@ def create_students(
             'passport': passports['1111'],
             'recruitment_office': recruitment_offices['Москва'],
             'university_info': university_infos['HSE1129'],
+            'contact_info': contact_infos['78005553535']
         },
         {
             'surname': 'Исаков',
@@ -384,6 +403,7 @@ def create_students(
             'passport': passports['2222'],
             'recruitment_office': recruitment_offices['Москва'],
             'university_info': university_infos['HSE11319'],
+            'contact_info': contact_infos['79608956420']
         },
         {
             'surname': 'Алиев',
@@ -401,6 +421,7 @@ def create_students(
             'passport': passports['3333'],
             'recruitment_office': recruitment_offices['Москва'],
             'university_info': university_infos['HSE1889'],
+            'contact_info': contact_infos['78005553535']
         },
         {
             'surname': 'Куркин',
@@ -418,6 +439,7 @@ def create_students(
             'passport': passports['4444'],
             'recruitment_office': recruitment_offices['Москва'],
             'university_info': university_infos['HSE11255'],
+            'contact_info': contact_infos['78005553535']
         },
         {
             'surname': 'Иванов',
@@ -435,6 +457,7 @@ def create_students(
             'passport': passports['5555'],
             'recruitment_office': recruitment_offices['Москва'],
             'university_info': university_infos['HSE1199'],
+            'contact_info': contact_infos['78005553535']
         },
         {
             'surname': 'Чукмарикадзе',
@@ -452,6 +475,7 @@ def create_students(
             'passport': passports['6666'],
             'recruitment_office': recruitment_offices['Москва'],
             'university_info': university_infos['HSE7779'],
+            'contact_info': contact_infos['78005553535']
         }
     ]
 
