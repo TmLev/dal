@@ -1,8 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import (
-    Group,
-    Permission,
-)
 
 from rest_framework import serializers
 
@@ -10,12 +6,17 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from conf.settings import CREATE_PASSWORD_TOKEN_LIFETIME
 
+from auth.models import (
+    Group,
+    Permission,
+)
+
 
 class PermissionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Permission
-        fields = ["name", "codename"]
+        fields = "__all__"
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -33,11 +34,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ["id", "email", "permissions"]
 
     def get_permissions(self, obj) -> list[str]:
-        groups = obj.groups.all()
-        permissions = []
-        for group in groups:
-            permissions += [perm.codename for perm in group.permissions.all()]
-        return list(set(permissions))
+        return PermissionSerializer(obj.get_all_permissions(), many=True).data
 
 
 class TokenPairSerializer(serializers.Serializer):
