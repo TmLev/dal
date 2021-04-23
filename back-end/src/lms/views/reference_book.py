@@ -41,7 +41,7 @@ from auth.permissions import (
 
 
 class ReferenceBookPermission(BasePermission):
-    permission_class = 'auth.reference_book'
+    permission_class = 'reference_book'
 
 
 @extend_schema(tags=['reference-book'])
